@@ -36,9 +36,12 @@
 
 #if defined(WIN32) && !defined(__CYGWIN__)
 #include <windows.h>
+#define _mkdir(x, y) mkdir(x)
 #ifndef INVALID_FILE_ATTRIBUTES
 #define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
 #endif
+#else
+#define _mkdir(x, y) mkdir(x, y)
 #endif
 
 #ifndef HAVE_STAT
@@ -343,7 +346,7 @@ xsltCheckWritePath(xsltSecurityPrefsPtr sec,
 	    }
 	    ret = xsltCheckWritePath(sec, ctxt, directory);
 	    if (ret == 1)
-		ret = mkdir(directory, 0755);
+		ret = _mkdir(directory, 0755);
 	}
 	xmlFree(directory);
 	if (ret < 0)
